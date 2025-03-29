@@ -1,0 +1,9 @@
+model:
+  _target_: dit.get_model
+  backbone_type: DiT-B/2
+  params:
+    num_classes: ${dataset.num_classes}
+    in_channels: ${dataset.num_channels}
+    input_size: ${dataset.resolution}
+    cond_mode: adaln
+    enable_routing: False

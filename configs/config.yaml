@@ -1,0 +1,70 @@
+defaults:
+  - model: dit # or tread (both in dit.py)
+
+
+dataset:
+  name: imagenet256
+  num_workers: 4
+  total_num: 1281167
+  num_classes: 1000
+  resolution: 32
+  num_channels: 4
+  train_path: /export/group/datasets/ILSVRC/imagenet256_latents_wds
+  val_path: null
+  ref_path: /export/scratch/ra63vex/MaskDiT/assets/fid_stats/VIRTUAL_imagenet256_labeled.npz
+
+train:
+  general:
+    class_drop_prob: 0.1
+    batch_size: 256
+    max_epochs: 100000
+    gradient_clipping_norm: null
+
+  optimizer:
+    _target_: torch.optim.AdamW
+    lr: 1e-4
+    betas: [0.9, 0.999]
+    eps: 1e-08
+    weight_decay: 0.0
+
+  diffuser:
+    _target_: edm.EDMDiffusion
+
+  logging:
+    log_interval: 100
+
+  eval:
+    cfg_scales: [null]
+    batchsize: 50
+    eval_interval: 50_000
+    fid_num_samples: 5_000
+    fid_batch_size: 64
+    seeds: '100000-149999'
+    subdirs: False
+    class_idx: null
+    max_batch_size: 100
+    cfg_scale: null
+    num_steps: 40
+    S_churn: 0
+    solver: null
+    discretization: null
+    schedule: null
+    scaling: null
+    inception_path: /export/scratch/ra63vex/MaskDiT/assets/inception-2015-12-05.pkl
+
+wandb:
+  project: tread_github_test
+
+results_dir: /export/scratch/ra63vex/results_tread
+run_name: tread_b
+
+hydra:  
+  output_subdir: null  
+  run:  
+    dir: .
+
+enable_eval: True
+global_seed: 42
+save_ckpt: True
+load_ckpt: False
+log_wandb: True
