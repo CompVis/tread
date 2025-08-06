@@ -19,7 +19,7 @@ This repository contains the official implementation of the paper "TREAD: Token 
 We propose TREAD, a new method to increase the efficiency of diffusion training by improving upon iteration speed and performance at the same time. For this, we use uni-directional token transportation to modulate the information flow in the network.
 
 <div align="center">
-  <img src="./docs/images/teaser.png" alt="teaser" style="width:50%;">
+  <img src="./docs/static/images/teaser.png" alt="teaser" style="width:50%;">
 </div>
 
 ## 🚀 Usage
