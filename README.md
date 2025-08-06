@@ -12,7 +12,7 @@
 </p>
 
 [![Paper](https://img.shields.io/badge/arXiv-PDF-b31b1b)](https://arxiv.org/abs/2501.04765)
-[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://compvis.github.io/cleandift/)
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://compvis.github.io/tread/)
 
 This repository contains the official implementation of the paper "TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training".
 
