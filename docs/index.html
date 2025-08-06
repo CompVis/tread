@@ -1,1 +1,438 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training">
+    <meta name="keywords" content="Routing, Tokens, Flow Matching, Diffusion, Training, Efficiency, Convergence">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training</title>
+    <style>
+        .container.is-max-desktop {
+            max-width: 1300px;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FWSVCGZTG"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-1FWSVCGZTG');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/css/bulma.min.css">
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/twentytwenty.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="icon" href="static/images/radio.png">
+
+    <script src="static/js/jquery-3.2.1.min.js"></script>
+    <script src="static/js/jquery.event.move.js"></script>
+    <script src="static/js/jquery.twentytwenty.js"></script>
+    <script src="static/js/bulma-carousel.min.js"></script>
+    <script src="static/js/bulma-slider.min.js"></script>
+    <script src="static/js/fontawesome.all.min.js"></script>
+
+    <!--MathJax-->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training</h1>
+                        <h2 class="title is-3">ICCV 2025</h2>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block" style="margin-right: 10px;">Felix Krause,</span>
+                            <span class="author-block" style="margin-right: 10px;">Timy Phan,</span>
+                            <span class="author-block" style="margin-right: 10px;">Ming Gui,</span>
+                            <span class="author-block" style="margin-right: 10px;">Stefan Andreas Baumann,</span>
+                            <span class="author-block" style="margin-right: 10px;">Vincent Tao Hu,</span>
+                            <span class="author-block" style="margin-right: 10px;">Björn Ommer</span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"></span><br>
+                            <span class="author-block">CompVis @ LMU Munich</span><br>
+                            <span class="author-block"> Munich Center for Machine Learning (MCML)</span><br>
+                        </div>
+
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <!-- TODO Update arxiv link in href. -->
+                                    <a href="https://arxiv.org/abs/2501.04765" target="_blank" rel="noopener noreferrer"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-file-pdf" style="color: orangered"></i>
+                                        </span>
+                                        <span>arXiv</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
+                                    <a href="https://github.com/compvis/tread" target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero teaser">
+        <div class="container is-max-desktop">
+            <div class="hero-body">
+                <img id="teaser" width="95%" src="static/images/teaser.png" alt="We propose TREAD, a new method to increase the efficiency of 
+                diffusion training by improving upon iteration speed and performance at the same time. 
+                For this, we use uni-directional token transportation to modulate the information flow in the network." />
+            </div>
+        </div>
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-justified">
+                        <p style="margin-bottom: 20px; margin-top: 10px;">
+                            <span style="font-weight: bold; font-size: 1.3em;">TL;DR:</span> We propose TREAD, a new method to increase the efficiency of
+                            diffusion training by improving upon iteration speed and performance at the same time. TREAD does not use 
+                            For this, we use uni-directional token transportation to modulate the information flow in the network <strong>any change in architecture itself</strong>  and <strong>no additional pretrained models</strong>.
+                            Using TREAD, we achieve a <strong>37x</strong> speedup in training time and show significantly lower FID compared to the unmodified baseline as training continues. 
+                            Further, we show that TREAD can be applied to a variety of token-based architectures like State-Space Models.
+                        </p> <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </section>
+
+
+
+    <section class="section pt-0  hero is-light">
+        <div class="container is-max-desktop">
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <br>
+                    <h2 class="title is-3">Overview</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Diffusion models have emerged as the mainstream approach for visual generation. However, these models typically suffer
+                            from sample inefficiency and high training costs. Consequently, methods for efficient finetuning, inference and
+                            personalization were quickly adopted by the community. However, training these models in the first place remains very
+                            costly. While several recent approaches - including masking, distillation, and architectural modifications - have been
+                            proposed to improve training efficiency, each of these methods comes with a tradeoff: they achieve enhanced performance
+                            at the expense of increased computational cost or vice versa. In contrast, this work aims to improve training efficiency
+                            as well as generative performance at the same time through routes that act as a transport mechanism for randomly
+                            selected tokens from early layers to deeper layers of the model. Our method is not limited to the common
+                            transformer-based model - it can also be applied to state-space models and achieves this without architectural
+                            modifications or additional parameters. Finally, we show that TREAD reduces computational cost and simultaneously boosts
+                            model performance on the standard ImageNet-256 benchmark in class-conditional synthesis. Both of these benefits multiply
+                            to a convergence speedup of 14x at 400K training iterations compared to DiT and 37x compared to the best benchmark
+                            performance of DiT at 7M training iterations. Furthermore, we achieve a competitive FID of 2.09 in a guided and 3.93 in
+                            an unguided setting, which improves upon the DiT, without architectural changes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <!-- Method. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-4">Motivation</h2>
+                    <div class="content has-text-justified">
+                        <!-- # Center the image -->
+                        <figure>
+                            <img id="method_train"
+                                style="width: 70%; margin-left: auto; margin-right: auto; display: block;"
+                                src="static/images/cossim_pure.png" alt="TREAD: Routing scheme" />
+                            <figcaption class="has-text-centered">Consecutive layers have highly similar output. The
+                            effects of the routing mechanism are evident in the cosine similari-
+                            ties between layers. For a r<sub>2&rarr;8</sub>, L<sub>2</sub> exhibits high similarity with the
+                            routed layers. This is interpreted as an adaptation of L<sub>2</sub> to <sub>2&rarr;8</sub>.
+                            .</figcaption>
+                            </figure>
+                        <p>
+                            Residual-based architectures, including transformers, can interpret outputs from preceding layers. We demonstrate this property (above), 
+                            where the cosine similarity between the outputs of 
+                            all layers in a trained network is shown. This characteristic
+                            can be leveraged either to cache layer outputs from previous
+                            timesteps for improved inference or to route tokens from one
+                            layer to deeper layers, as proposed in TREAD.
+                        </p>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container is-max-desktop">
+            <!-- Method. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Method</h2>
+                    <div class="content has-text-justified">
+                        <!-- # Center the image -->
+                        <figure>
+                            <img id="method_train"
+                                style="width: 90%; margin-left: auto; margin-right: auto; display: block;"
+                                src="static/images/method.png" alt="TREAD: Routing scheme" />
+                            <figcaption class="has-text-centered">During trainig we modify the forward pass with a route from layer $i$ to layer $j$.</figcaption>
+                        </figure>
+                        <p>
+                            During each training step, a randomly chosen subset of tokens is “teleported” from an early layer i directly to a deeper
+                            layer j (a route i → j). Tokens that take the shortcut skip the self-attention and feed-forward modules in all layers
+                            between i and j, yielding lower FLOPs and higher training throughput. Because
+                            the routed tokens re-enter the network, no information is lost, and early blocks receive a deep-supervision signal when
+                            their activations are compared against late-stage objectives. In practice, routes that begin just after the start
+                            (i ≈ 2), span most of the depth (j ≈ B-4), and involve 50 % of tokens strike the best balance between speed-up and
+                            sample quality.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-0 hero is-light">
+        <style>
+            .fid-tables {
+                width: 100%;
+                margin: 0 auto;
+            }
+    
+            .table-images {
+                display: flex;
+                flex-wrap: nowrap;
+                /* never stack */
+                gap: 0.75rem;
+                justify-content: center;
+                overflow-x: auto;
+                /* permit horizontal scroll if viewport too small */
+                padding-bottom: 0.5rem;
+                /* give some breathing room for scrollbar */
+            }
+    
+            .table-images img {
+                flex: 0 0 49%;
+                /* each takes ~half, fixed basis so they sit side by side */
+                max-width: none;
+                /* allow the basis to control size */
+                height: auto;
+                object-fit: contain;
+                display: block;
+                min-width: 300px;
+                /* ensures readability; adjust or remove if too wide */
+            }
+    
+            .figcaption-italic {
+                color: #777;
+                font-size: 0.85em;
+                margin-top: 0.5rem;
+            }
+        </style>
+    
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-four-fifths">
+                        <h2 class="title is-3 has-text-centered">Results</h2>
+    
+                        <!-- Quantitative Results -->
+                        <div class="content has-text-justified">
+                            <h3 class="title has-text-centered" style="font-size: 1.5em;">Quantitative Results</h3>
+                            <p>
+                                We report FID scores across different architectures trained for 400K iterations on
+                                ImageNet-256.
+                                Our method consistently improves FID across all backbone sizes.
+                            </p>
+    
+                            <!-- Tables -->
+                            <figure class="fid-tables">
+                                <div class="table-images">
+                                    <img src="static/images/table_400k.png" alt="FID comparison table (400K)" />
+                                    <img src="static/images/table_final.png"
+                                        alt="FID comparison table (additional settings)" />
+                                </div>
+                                <figcaption class="has-text-centered figcaption-italic">
+                                    <i>Performance comparison across all model configurations. Left: trained for 400K
+                                        iterations. Right: ablation or additional variant.</i>
+                                </figcaption>
+                            </figure>
+    
+                            <p>
+                                On ImageNet-256 (class-conditional), DiT-XL/2 + TREAD reaches an unguided FID of 3.93 after
+                                400K updates, which is
+                                14x faster than the baseline and 37x faster than DiT's published best checkpoint at 7M
+                                steps. Finetuning without routing achieves
+                                a final guided FID of 2.09. Furthermore, the same routing idea transfers to state-space
+                                models (e.g., RWKV), to 512² resolution,
+                                and to the text-to-image benchmark MS-COCO. Additionally, we find it stacks with
+                                representation distillation methods like REPA.
+                            </p>
+                        </div>
+    
+                        <!-- Qualitative Results -->
+                        <div class="content">
+                            <h3 class="title has-text-centered" style="font-size: 1.5em;">Qualitative Results</h3>
+                            <figure>
+                                <img id="forward_inf" style="width: 100%; margin: auto; display: block;"
+                                    src="static/images/samples.png" alt="Examples of a DiT-XL/2 + TREAD" />
+                                <figcaption class="has-text-centered">
+                                    Examples of a DiT-XL/2 + TREAD. For more (uncurated) examples, please refer to the
+                                    appendix in our paper.
+                                </figcaption>
+                            </figure>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+      
+      
+    
+      
+
+    <section class="section hero">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered">
+    
+                        <!-- Main Header -->
+                        <h2 class="title is-3">Analysis</h2>
+    
+                        <!-- Sub-header -->
+                        <h3 class="title is-4" style="margin-top: -0.5em;">Route Placement</h3>
+    
+                        <!-- Single Image + Caption -->
+                        <figure>
+                            <img id="method_inference"
+                                style="width: 100%; margin-left: auto; margin-right: auto; display: block;"
+                                src="static/images/routes.png" alt="TREAD: Inference routing scheme" />
+                            <figcaption class="has-text-centered mt-3">
+                                <span style="font-size: 0.95em; color: #555;">
+                                    FID for different route placements in DiT-B/2 + TREAD. 
+                            </figcaption>
+                        </figure>
+                        <p style="text-align: left;"></p>
+                        Guidelines for route placement:
+                        </p>
+                        <ol
+                            style="text-align: left; display: inline-block; margin: 0 auto; padding-left: 1.5em; font-size: 0.98em; color: #666; list-style: none; counter-reset: item;">
+                            <li style="text-indent: -1.5em; padding-left: 1.5em;">
+                                <span style="font-weight: bold; counter-increment: item;">1.</span> Long routes
+                                improve convergence and training efficiency.
+                            </li>
+                            <li style="text-indent: -1.5em; padding-left: 1.5em;">
+                                <span style="font-weight: bold; counter-increment: item;">2.</span> Ending the route
+                                before the final layers is essential.
+                            </li>
+                            <li style="text-indent: -1.5em; padding-left: 1.5em;">
+                                <span style="font-weight: bold; counter-increment: item;">3.</span> Not starting the
+                                route immediately at the beginning brings further improvements.
+                            </li>
+                        </ol>
+                        <p>
+                            Furthermore, we test scaling behavior with increasing layer number (from a DiT-B/2 with 12 layers to a DiT-XL/2 with 28 layers). 
+                            We find that absolute scaling (i=2, j=B-4) works best for all tested models, while relative scaling shows little performance gain.
+                            From this we conclude that route placement is crucial but can be solved with the provided guidelines.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+      
+      
+      
+
+
+
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@article{krause2025tread,
+            title={TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training},
+            author={Krause, Felix and Phan, Timy and Gui, Ming and Baumann, Stefan Andreas and Hu, Vincent Tao and Ommer,
+            Bj{\"o}rn},
+            journal={arXiv preprint arXiv:2501.04765},
+            year={2025}             
+        }
+      </code></pre>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content">
+
+                        <p>
+                            This page was built using the <a
+                                href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                                target="_blank">Academic Project Page Template</a> which was adopted from the <a
+                                href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+                            You are free to borrow the source code of this website, we just ask that you link back to
+                            this page in the
+                            footer. <br> This website is licensed under a <a rel="license"
+                                href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+                                Commons Attribution-ShareAlike 4.0 International License</a>.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

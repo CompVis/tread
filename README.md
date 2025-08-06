@@ -15,7 +15,7 @@
 
 This repository contains the official implementation of the paper "TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training".
 
-We propose TREAD, a new method to increase the efficiency of diffusion training by improving upon iteration speed and performance at the same time. For this, we use uni-directional token transportation to modulate the information flow in the network. 
+We propose TREAD, a new method to increase the efficiency of diffusion training by improving upon iteration speed and performance at the same time. For this, we use uni-directional token transportation to modulate the information flow in the network.
 
 <div align="center">
   <img src="./docs/images/teaser.png" alt="teaser" style="width:50%;">
@@ -30,7 +30,9 @@ In order to train a diffusion model, we offer a minimalistic training script in 
 ```python
 accelerate launch train.py model=tread
 ```
+
 or
+
 ```python
 accelerate launch train.py model=dit
 ```
@@ -50,14 +52,11 @@ For sampling, we use the [EDM](https://github.com/NVlabs/edm) sampling, and the 
 If you use this codebase or otherwise found our work valuable, please cite our paper:
 
 ```bibtex
-@misc{krause2025treadtokenroutingefficient,
-      title={TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training}, 
-      author={Felix Krause and Timy Phan and Vincent Tao Hu and Björn Ommer},
-      year={2025},
-      eprint={2501.04765},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2501.04765}, 
+@article{krause2025tread,
+  title={TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training},
+  author={Krause, Felix and Phan, Timy and Gui, Ming and Baumann, Stefan Andreas and Hu, Vincent Tao and Ommer, Bj{\"o}rn},
+  journal={arXiv preprint arXiv:2501.04765},
+  year={2025}
 }
 ```
 
