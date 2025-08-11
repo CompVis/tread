@@ -11,7 +11,7 @@
   <b>CompVis Group @ LMU Munich</b> <br/>
 </p>
 
-[![Paper](https://img.shields.io/badge/arXiv-PDF-b31b1b)](https://arxiv.org/abs/2501.04765)
+[![Paper](https://img.shields.io/badge/arXiv-PDF-b31b1b)](https://arxiv.org/pdf/2501.04765)
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://compvis.github.io/tread/)
 
 This repository contains the official implementation of the paper "TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training".
@@ -19,12 +19,10 @@ This repository contains the official implementation of the paper "TREAD: Token 
 We propose TREAD, a new method to increase the efficiency of diffusion training by improving upon iteration speed and performance at the same time. For this, we use uni-directional token transportation to modulate the information flow in the network.
 
 <div align="center">
-  <img src="./docs/images/teaser.png" alt="teaser" style="width:50%;">
+  <img src="./docs/static/images/teaser.png" alt="teaser" style="width:50%;">
 </div>
 
-## 🚀 Usage
-
-### Training
+## 🚀 Training
 
 In order to train a diffusion model, we offer a minimalistic training script in `train.py`. In its simplest form it can be started using:
 
@@ -44,9 +42,20 @@ Under `model` one can decide between `dit` and `tread` which are the preconfigur
 
 In our paper, we show that TREAD can also work on other architectures. In practice, one needs to be more careful with the routing process in order to adhere to the characteristics of the specific architecture as some have a spatial bias (RWKV, Mamba, etc.). For simplicity, we only provide code for the Transformer architecture as it is the most widely used while being robust and easy to work with.
 
-### Sampling
+## 🖼️ Sampling
 
-For sampling, we use the [EDM](https://github.com/NVlabs/edm) sampling, and the FID calculation is done via the [ADM](https://github.com/openai/guided-diffusion) evaluation suite. We provide a `fid.py` to evaluate our models during training using the same reference batches as ADM.
+For most experiments we use the [EDM](https://github.com/NVlabs/edm) training and sampling to stay consistent with prior art, and the FID calculation is done via the [ADM](https://github.com/openai/guided-diffusion) evaluation suite. We provide a `fid.py` to evaluate our models during training using the same reference batches as ADM.
+
+## 💥 Guiding TREAD
+
+TREAD works great during _training_! How about _inference_? \
+It turns out TREAD can be applied during guided inference as well to gain additional performance and reduce FLOPS at the same time! \
+Instead of dropping the class label (CFG), we can guide with a selection rate delta. Since TREAD's selection rate (0.5) generalizes to other rates, this can be tuned in inference-time only.
+
+We demonstrate this in `rf.py` which contains minimal flow matching code for training and sampling:
+
+`sample`: normal sampling\
+`sample_tread`: TREAD sampling 🔥
 
 ## 🎓 Citation
 

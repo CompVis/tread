@@ -228,20 +228,22 @@ class DiT(nn.Module):
 
     def forward(self, x: torch.Tensor, t: torch.Tensor, y: torch.Tensor, **kwargs) -> Dict[str, torch.Tensor]:
         class_drop_prob = kwargs.get('class_drop_prob', 0.0)
+        force_routing = kwargs.get('force_routing', False)
+        overwrite_selection_ratio = kwargs.get('overwrite_selection_ratio', None)
 
         x = self.x_embedder(x) + self.pos_embed
         t = self.t_embedder(t)
         y = self.y_embedder(y, class_drop_prob)
         c = t + y
 
-        use_routing = self.training and self.enable_routing and self.routes
+        use_routing = (self.training and self.enable_routing and self.routes) or force_routing
         route_count = 0 if use_routing else None
         fp32_next = False
 
         for idx, block in enumerate(self.blocks):
             if use_routing and idx == self.routes[route_count]['start_layer_idx']:
                 x_D_last = x.clone()
-                mask_info = self.router.get_mask(x, mask_ratio=self.routes[route_count]['selection_ratio'])
+                mask_info = self.router.get_mask(x, mask_ratio=self.routes[route_count]['selection_ratio'] if overwrite_selection_ratio is None else overwrite_selection_ratio)
                 x = self.router.start_route(x, mask_info)
 
             if fp32_next:
