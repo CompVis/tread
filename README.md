@@ -1,6 +1,6 @@
 <h2 align="center">👟TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training</h2>
 <div align="center"> 
-  <a href="" target="_blank">Felix Krause</a> · 
+  <a href="https://x.com/felix_m_krause" target="_blank">Felix Krause</a> · 
   <a href="" target="_blank">Timy Phan</a> · 
   <a href="" target="_blank">Ming Gui</a> · 
   <a href="https://stefan-baumann.eu/" target="_blank">Stefan Baumann</a> · 
