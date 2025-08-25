@@ -243,8 +243,8 @@ class DiT(nn.Module):
         for idx, block in enumerate(self.blocks):
             if use_routing and idx == self.routes[route_count]['start_layer_idx']:
                 x_D_last = x.clone()
-                mask_info = self.router.get_mask(x, mask_ratio=self.routes[route_count]['selection_ratio'] if overwrite_selection_ratio is None else overwrite_selection_ratio)
-                x = self.router.start_route(x, mask_info)
+                ids_keep = self.router.get_mask(x, mask_ratio=self.routes[route_count]['selection_ratio'] if overwrite_selection_ratio is None else overwrite_selection_ratio)
+                x = self.router.start_route(x, ids_keep)
 
             if fp32_next:
                 with torch.amp.autocast(device_type="cuda", enabled=False):
@@ -254,7 +254,7 @@ class DiT(nn.Module):
                 x = block(x, c)
 
             if use_routing and idx == self.routes[route_count]['end_layer_idx']:
-                x = self.router.end_route(x, mask_info, original_x=x_D_last)
+                x = self.router.end_route(x, ids_keep, original_x=x_D_last)
                 fp32_next = True
                 if route_count < len(self.routes) - 1:
                     route_count += 1
