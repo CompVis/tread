@@ -243,7 +243,7 @@ class DiT(nn.Module):
         for idx, block in enumerate(self.blocks):
             if use_routing and idx == self.routes[route_count]['start_layer_idx']:
                 x_D_last = x.clone()
-                ids_keep = self.router.get_mask(x, mask_ratio=self.routes[route_count]['selection_ratio'] if overwrite_selection_ratio is None else overwrite_selection_ratio)
+                ids_keep = self.router.get_mask(x, selection_rate=self.routes[route_count]['selection_ratio'] if overwrite_selection_ratio is None else overwrite_selection_ratio)
                 x = self.router.start_route(x, ids_keep)
 
             if fp32_next:
