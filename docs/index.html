@@ -130,9 +130,9 @@
                     <div class="content has-text-justified">
                         <p style="margin-bottom: 20px; margin-top: 10px;">
                             <span style="font-weight: bold; font-size: 1.3em;">TL;DR:</span> We propose TREAD, a new method to increase the efficiency of
-                            diffusion training by improving upon iteration speed and performance at the same time. TREAD does not use 
-                            For this, we use uni-directional token transportation to modulate the information flow in the network <strong>any change in architecture itself</strong>  and <strong>no additional pretrained models</strong>.
-                            Using TREAD, we achieve a <strong>37x</strong> speedup in training time and show significantly lower FID compared to the unmodified baseline as training continues. 
+                            diffusion training by improving upon iteration speed and convergence at the same time. TREAD does not use any extra parameters, pretrained models or additional losses. All changes are training-time only and do not affect inference.
+                            For this, we use uni-directional token transportation to modulate the information flow in the network. In contrast to masking or pruning, TREAD does not discard any information, but rather reuses it at deeper layers.
+                            Using TREAD, we achieve a <strong>37x</strong> speedup in training time and show significantly lower FID compared to the unmodified baseline. 
                             Further, we show that TREAD can be applied to a variety of token-based architectures like State-Space Models.
                         </p> <br>
                     </div>
@@ -188,18 +188,14 @@
                                 style="width: 70%; margin-left: auto; margin-right: auto; display: block;"
                                 src="static/images/cossim_pure.png" alt="TREAD: Routing scheme" />
                             <figcaption class="has-text-centered">Consecutive layers have highly similar output. The
-                            effects of the routing mechanism are evident in the cosine similari-
-                            ties between layers. For a r<sub>2&rarr;8</sub>, L<sub>2</sub> exhibits high similarity with the
-                            routed layers. This is interpreted as an adaptation of L<sub>2</sub> to <sub>2&rarr;8</sub>.
-                            .</figcaption>
+                            effects of the routing mechanism are evident in the cosine similarities between layers. For a route r<sub>2&rarr;8</sub>, L<sub>2</sub> exhibits high similarity with the
+                            routed layers. This is interpreted as an adaptation of L<sub>2</sub> to r<sub>2&rarr;8</sub>.
+                            </figcaption>
                             </figure>
                         <p>
                             Residual-based architectures, including transformers, can interpret outputs from preceding layers. We demonstrate this property (above), 
                             where the cosine similarity between the outputs of 
-                            all layers in a trained network is shown. This characteristic
-                            can be leveraged either to cache layer outputs from previous
-                            timesteps for improved inference or to route tokens from one
-                            layer to deeper layers, as proposed in TREAD.
+                            all layers in a trained network is shown.
                         </p>
     
                     </div>
@@ -219,7 +215,7 @@
                             <img id="method_train"
                                 style="width: 90%; margin-left: auto; margin-right: auto; display: block;"
                                 src="static/images/method.png" alt="TREAD: Routing scheme" />
-                            <figcaption class="has-text-centered">During trainig we modify the forward pass with a route from layer $i$ to layer $j$.</figcaption>
+                            <figcaption class="has-text-centered">During training we modify the forward pass with a route from layer $i$ to layer $j$.</figcaption>
                         </figure>
                         <p>
                             During each training step, a randomly chosen subset of tokens is “teleported” from an early layer i directly to a deeper
@@ -381,7 +377,7 @@
                         <p>
                             Furthermore, we test scaling behavior with increasing layer number (from a DiT-B/2 with 12 layers to a DiT-XL/2 with 28 layers). 
                             We find that absolute scaling (i=2, j=B-4) works best for all tested models, while relative scaling shows little performance gain.
-                            From this we conclude that route placement is crucial but can be solved with the provided guidelines.
+                            We conclude that route placement is crucial but can be effectively determined using the provided guidelines.
                         </p>
                     </div>
                 </div>
