@@ -47,6 +47,10 @@ In our paper, we show that TREAD can also work on other architectures. In practi
 For most experiments we use the [EDM](https://github.com/NVlabs/edm) training and sampling to stay consistent with prior art, and the FID calculation is done via the [ADM](https://github.com/openai/guided-diffusion) evaluation suite. We provide a `fid.py` to evaluate our models during training using the same reference batches as ADM.
 
 ## 💥 Guiding TREAD
+[![arXiv](https://img.shields.io/badge/arXiv-2601.01608-b31b1b.svg)](https://arxiv.org/abs/2601.01608)
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://compvis.github.io/sparse-guidance/)
+
+![Sparse Guidance overview](https://compvis.github.io/sparse-guidance/static/images/title_fig.png)
 
 TREAD works great during _training_! How about _inference_? \
 It turns out TREAD can be applied during guided inference as well to gain additional performance and reduce FLOPS at the same time! \
@@ -62,11 +66,25 @@ We demonstrate this in `rf.py` which contains minimal flow matching code for tra
 If you use this codebase or otherwise found our work valuable, please cite our paper:
 
 ```bibtex
-@article{krause2025tread,
-  title={TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training},
-  author={Krause, Felix and Phan, Timy and Gui, Ming and Baumann, Stefan Andreas and Hu, Vincent Tao and Ommer, Bj{\"o}rn},
-  journal={arXiv preprint arXiv:2501.04765},
-  year={2025}
+# TREAD (ICCV 2025)
+@InProceedings{krause2025tread,
+    author={Krause, Felix and Phan, Timy and Gui, Ming and Baumann, Stefan Andreas and Hu, Vincent Tao and Ommer, Bj\"orn},
+    title={TREAD: Token Routing for Efficient Architecture-agnostic Diffusion Training},
+    booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month={October},
+    year={2025},
+    pages={15703-15713}
+}
+
+# Sparse Guidance (Preprint 2026)
+@misc{krause2026guidingtokensparsediffusionmodels,
+      title={Guiding Token-Sparse Diffusion Models},
+      author={Felix Krause and Stefan Andreas Baumann and Johannes Schusterbauer and Olga Grebenkova and Ming Gui and Vincent Tao Hu and Bj\"orn Ommer},
+      year={2026},
+      eprint={2601.01608},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2601.01608}, 
 }
 ```
 
