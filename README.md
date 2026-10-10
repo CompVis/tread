@@ -61,6 +61,9 @@ We demonstrate this in `rf.py` which contains minimal flow matching code for tra
 `sample`: normal sampling\
 `sample_tread`: TREAD sampling 🔥
 
+## 🏎️ Pretrained Checkpoint
+`SiT-XL/2 + TREAD, 400 Epochs`: [HF Link](https://huggingface.co/flix-k/tread_sit_xl_2m/tree/main)
+
 ## 🎓 Citation
 
 If you use this codebase or otherwise found our work valuable, please cite our paper:
